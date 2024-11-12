@@ -1,0 +1,8 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "bar",
+    srcs = ["quux.go"],
+    importpath = "github.com/findyourpaths/yaegi/_test/testdata/redeclaration-global7/src/guthib.com/bar",
+    visibility = ["//visibility:public"],
+)

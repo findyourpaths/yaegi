@@ -1,0 +1,10 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "cheese",
+    srcs = ["cheese.go"],
+    importmap = "github.com/findyourpaths/yaegi/example/pkg/_pkg5/src/github.com/foo/pkg/vendor/guthib.com/traefik/cheese",
+    importpath = "guthib.com/traefik/cheese",
+    visibility = ["//visibility:public"],
+    deps = ["//example/pkg/_pkg5/src/github.com/foo/pkg/vendor/guthib.com/traefik/cheese/vin"],
+)

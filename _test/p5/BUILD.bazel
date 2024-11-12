@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "p5",
+    srcs = ["p5.go"],
+    importpath = "github.com/findyourpaths/yaegi/_test/p5",
+    visibility = ["//visibility:public"],
+    deps = ["//_test/p4"],
+)

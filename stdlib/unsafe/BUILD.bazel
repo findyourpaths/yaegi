@@ -1,0 +1,12 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "unsafe",
+    srcs = [
+        "go1_21_unsafe.go",
+        "go1_22_unsafe.go",
+        "unsafe.go",
+    ],
+    importpath = "github.com/findyourpaths/yaegi/stdlib/unsafe",
+    visibility = ["//visibility:public"],
+)

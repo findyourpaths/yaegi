@@ -1,0 +1,58 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "interp",
+    srcs = [
+        "ast.go",
+        "build.go",
+        "cfg.go",
+        "debugger.go",
+        "doc.go",
+        "dot.go",
+        "generic.go",
+        "gta.go",
+        "hooks.go",
+        "interp.go",
+        "op.go",
+        "program.go",
+        "realfs.go",
+        "run.go",
+        "scope.go",
+        "src.go",
+        "trace.go",
+        "type.go",
+        "typecheck.go",
+        "typestring.go",
+        "use.go",
+        "value.go",
+    ],
+    importpath = "github.com/findyourpaths/yaegi/interp",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//internal/unsafe2",
+        "//stdlib/generic",
+    ],
+)
+
+go_test(
+    name = "interp_test",
+    srcs = [
+        "build_test.go",
+        "compile_test.go",
+        "example_eval_test.go",
+        "export_test.go",
+        "interp_consistent_test.go",
+        "interp_eval_test.go",
+        "interp_export_test.go",
+        "interp_file_test.go",
+        "interp_issue_1634_test.go",
+        "interp_test.go",
+        "self_example_test.go",
+        "src_test.go",
+    ],
+    embed = [":interp"],
+    deps = [
+        "//stdlib",
+        "//stdlib/unsafe",
+    ],
+)

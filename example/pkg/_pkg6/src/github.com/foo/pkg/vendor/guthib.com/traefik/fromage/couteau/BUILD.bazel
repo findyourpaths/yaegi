@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "couteau",
+    srcs = ["couteau.go"],
+    importmap = "github.com/findyourpaths/yaegi/example/pkg/_pkg6/src/github.com/foo/pkg/vendor/guthib.com/traefik/fromage/couteau",
+    importpath = "guthib.com/traefik/fromage/couteau",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,11 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "method38",
+    srcs = [
+        "a.go",
+        "b.go",
+    ],
+    importpath = "github.com/findyourpaths/yaegi/_test/method38",
+    visibility = ["//visibility:public"],
+)

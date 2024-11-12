@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "baz",
+    srcs = ["baz.go"],
+    importmap = "github.com/findyourpaths/yaegi/extract/testdata/4/src/guthib.com/bar/vendor/guthib.com/baz",
+    importpath = "guthib.com/baz",
+    visibility = ["//visibility:public"],
+)

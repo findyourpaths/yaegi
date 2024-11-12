@@ -1,0 +1,8 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "vin",
+    srcs = ["vin.go"],
+    importpath = "github.com/findyourpaths/yaegi/example/pkg/_pkg6/src/guthib.com/traefik/cheese/vin",
+    visibility = ["//visibility:public"],
+)

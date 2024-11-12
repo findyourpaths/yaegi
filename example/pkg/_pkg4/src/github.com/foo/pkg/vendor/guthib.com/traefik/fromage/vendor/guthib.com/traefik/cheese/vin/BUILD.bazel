@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "vin",
+    srcs = ["vin.go"],
+    importmap = "guthib.com/traefik/fromage/vendor/guthib.com/traefik/cheese/vin",
+    importpath = "guthib.com/traefik/cheese/vin",
+    visibility = ["//visibility:public"],
+)

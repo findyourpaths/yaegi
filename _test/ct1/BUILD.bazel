@@ -1,0 +1,8 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "ct1",
+    srcs = ["ct1.go"],
+    importpath = "github.com/findyourpaths/yaegi/_test/ct1",
+    visibility = ["//visibility:public"],
+)

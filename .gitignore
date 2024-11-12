@@ -8,3 +8,13 @@ internal/cmd/extract/extract
 example/inception/inception
 _test/tmp/
 /dist
+
+
+# Go workspace file
+go.work
+go.work.sum
+
+bazel-backend
+bazel-bin
+bazel-out
+bazel-testlogs

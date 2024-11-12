@@ -1,0 +1,10 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "pkg_test",
+    srcs = ["pkg_test.go"],
+    deps = [
+        "//interp",
+        "//stdlib",
+    ],
+)

@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "composite_lib",
+    srcs = [
+        "composite_lit.go",
+        "composite_sparse.go",
+    ],
+    importpath = "github.com/findyourpaths/yaegi/interp/testdata/concurrent/composite",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "composite",
+    embed = [":composite_lib"],
+    visibility = ["//visibility:public"],
+)

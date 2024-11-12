@@ -1,0 +1,17 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "concurrent_lib",
+    srcs = [
+        "hello1.go",
+        "hello2.go",
+    ],
+    importpath = "github.com/findyourpaths/yaegi/interp/testdata/concurrent",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "concurrent",
+    embed = [":concurrent_lib"],
+    visibility = ["//visibility:public"],
+)

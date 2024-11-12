@@ -1,0 +1,19 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "generic",
+    srcs = [
+        "go1_21_generic.go",
+        "go1_22_generic.go",
+    ],
+    embedsrcs = [
+        "go1_21_cmp.go.txt",
+        "go1_21_maps.go.txt",
+        "go1_21_slices.go.txt",
+        "go1_22_cmp_cmp.go.txt",
+        "go1_22_maps_maps.go.txt",
+        "go1_22_slices_slices.go.txt",
+    ],
+    importpath = "github.com/findyourpaths/yaegi/stdlib/generic",
+    visibility = ["//visibility:public"],
+)

@@ -1,0 +1,15 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "extract_lib",
+    srcs = ["extract.go"],
+    importpath = "github.com/findyourpaths/yaegi/internal/cmd/extract",
+    visibility = ["//visibility:private"],
+    deps = ["//extract"],
+)
+
+go_binary(
+    name = "extract",
+    embed = [":extract_lib"],
+    visibility = ["//:__subpackages__"],
+)

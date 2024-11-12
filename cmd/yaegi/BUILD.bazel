@@ -1,0 +1,34 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_library(
+    name = "yaegi_lib",
+    srcs = [
+        "extract.go",
+        "help.go",
+        "run.go",
+        "test.go",
+        "yaegi.go",
+    ],
+    importpath = "github.com/findyourpaths/yaegi/cmd/yaegi",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//extract",
+        "//interp",
+        "//stdlib",
+        "//stdlib/syscall",
+        "//stdlib/unrestricted",
+        "//stdlib/unsafe",
+    ],
+)
+
+go_binary(
+    name = "yaegi",
+    embed = [":yaegi_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_test(
+    name = "yaegi_test",
+    srcs = ["yaegi_test.go"],
+    embed = [":yaegi_lib"],
+)
