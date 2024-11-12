@@ -184,6 +184,8 @@ type opt struct {
 
 // Interpreter contains global resources and state.
 type Interpreter struct {
+	Prompt func(in io.Reader, out io.Writer) func(reflect.Value) // prompt activated on tty like IO stream
+
 	// id is an atomic counter used for run cancellation,
 	// only accessed via runid/stop
 	// Located at start of struct to ensure proper alignment on 32-bit
@@ -668,11 +670,15 @@ func (interp *Interpreter) REPL() (reflect.Value, error) {
 	end := make(chan struct{})     // channel to terminate the REPL
 	sig := make(chan os.Signal, 1) // channel to trap interrupt signal (Ctrl-C)
 	lines := make(chan string)     // channel to read REPL input lines
-	prompt := getPrompt(in, out)   // prompt activated on tty like IO stream
-	s := bufio.NewScanner(in)      // read input stream line by line
-	var v reflect.Value            // result value from eval
-	var err error                  // error from eval
-	src := ""                      // source string to evaluate
+	pt := interp.Prompt
+	if pt == nil {
+		pt = getPrompt
+	}
+	prompt := pt(in, out)     // prompt activated on tty like IO stream
+	s := bufio.NewScanner(in) // read input stream line by line
+	var v reflect.Value       // result value from eval
+	var err error             // error from eval
+	src := ""                 // source string to evaluate
 
 	signal.Notify(sig, os.Interrupt)
 	defer signal.Stop(sig)
