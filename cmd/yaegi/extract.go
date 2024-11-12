@@ -9,13 +9,28 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime/pprof"
 	"strings"
 
 	"github.com/traefik/yaegi/extract"
 )
 
 func extractCmd(arg []string) error {
+	profPath := "/tmp/pprof/extract.prof"
+	if err := os.MkdirAll(filepath.Dir(profPath), 0770); err != nil {
+		return err
+	}
+	f, err := os.Create(profPath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	pprof.StartCPUProfile(f)
+	defer pprof.StopCPUProfile()
+
 	var licensePath string
+	var dest string
+	var filename string
 	var name string
 	var exclude string
 	var include string
@@ -23,6 +38,8 @@ func extractCmd(arg []string) error {
 
 	eflag := flag.NewFlagSet("run", flag.ContinueOnError)
 	eflag.StringVar(&licensePath, "license", "", "path to a LICENSE file")
+	eflag.StringVar(&dest, "dest", "", "the package")
+	eflag.StringVar(&filename, "filename", "", "the filename for the extracted symbols")
 	eflag.StringVar(&name, "name", "", "the namespace for the extracted symbols")
 	eflag.StringVar(&exclude, "exclude", "", "comma separated list of regexp matching symbols to exclude")
 	eflag.StringVar(&include, "include", "", "comma separated list of regexp matching symbols to include")
@@ -55,8 +72,11 @@ func extractCmd(arg []string) error {
 	if name == "" {
 		name = filepath.Base(wd)
 	}
+	if dest == "" {
+		dest = name
+	}
 	ext := extract.Extractor{
-		Dest:    name,
+		Dest:    dest,
 		License: license,
 	}
 	if tag != "" {
@@ -73,6 +93,7 @@ func extractCmd(arg []string) error {
 	r := strings.NewReplacer("/", "-", ".", "_", "~", "_")
 
 	for _, pkgIdent := range args {
+		fmt.Printf("Extracting from package: %q...\n", pkgIdent)
 		var buf bytes.Buffer
 		importPath, err := ext.Extract(pkgIdent, name, &buf)
 		if err != nil {
@@ -80,6 +101,11 @@ func extractCmd(arg []string) error {
 			continue
 		}
 
+		if filename != "" {
+			importPath = filename
+		}
+
+		fmt.Printf("Extracted import path: %q...\n", importPath)
 		oFile := r.Replace(importPath) + ".go"
 		f, err := os.Create(oFile)
 		if err != nil {
