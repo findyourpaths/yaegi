@@ -12,7 +12,7 @@ import (
 	"runtime/pprof"
 	"strings"
 
-	"github.com/traefik/yaegi/extract"
+	"github.com/findyourpaths/yaegi/extract"
 )
 
 func extractCmd(arg []string) error {

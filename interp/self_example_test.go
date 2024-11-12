@@ -3,8 +3,8 @@ package interp_test
 import (
 	"log"
 
-	"github.com/traefik/yaegi/interp"
-	"github.com/traefik/yaegi/stdlib"
+	"github.com/findyourpaths/yaegi/interp"
+	"github.com/findyourpaths/yaegi/stdlib"
 )
 
 func ExampleInterpreter_self() {
@@ -22,7 +22,7 @@ func ExampleInterpreter_self() {
 	"log"
 
 	// Import interp to gain access to Self.
-	"github.com/traefik/yaegi/interp"
+	"github.com/findyourpaths/yaegi/interp"
 )`)
 	if err != nil {
 		log.Fatal(err)

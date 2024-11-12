@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/traefik/yaegi/_test/method38"
+	"github.com/findyourpaths/yaegi/_test/method38"
 )
 
 func NewPool() Pool { return Pool{} }
