@@ -171,7 +171,7 @@ func (interp *Interpreter) Execute(p *Program) (res reflect.Value, err error) {
 	for _, n := range p.init {
 		interp.run(n, interp.frame)
 	}
-	v := genValue(p.root)
+	v := genValueTop(p.root)
 	res = v(interp.frame)
 
 	// If result is an interpreter node, wrap it in a runtime callable function.
