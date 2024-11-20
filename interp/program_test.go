@@ -21,7 +21,16 @@ func TestREPLMultiValue(t *testing.T) {
 			},
 		},
 		// {
-		// 	// Return three values
+		// 	// Return three values from named function.
+		// 	src: `strings.Cut("Gopher", "ph")`,
+		// 	expected: []reflect.Value{
+		// 		reflect.ValueOf("Go),
+		// 		reflect.ValueOf("er"),
+		// 		reflect.ValueOf(true),
+		// 	},
+		// },
+		// {
+		// 	// Return three values from anonymous function.
 		// 	src: `func() (int, string, bool) { return 42, "foo", true }()`,
 		// 	expected: []reflect.Value{
 		// 		reflect.ValueOf(42),
@@ -38,7 +47,7 @@ func TestREPLMultiValue(t *testing.T) {
 			},
 		},
 		// {
-		// 	// Return two values.
+		// 	// Return two values from anonymous function.
 		// 	src: `func() (int, string) { return 42, "foo" }()`,
 		// 	expected: []reflect.Value{
 		// 		reflect.ValueOf(42),
@@ -53,7 +62,7 @@ func TestREPLMultiValue(t *testing.T) {
 			},
 		},
 		// {
-		// 	// Return one value.
+		// 	// Return one value from anonymous function.
 		// 	src: `func() (int) { return 42 }()`,
 		// 	expected: []reflect.Value{
 		// 		reflect.ValueOf(42),

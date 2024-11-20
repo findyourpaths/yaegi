@@ -5,13 +5,15 @@ import (
 	"reflect"
 )
 
-var WrapTopValues = false
+var WrapTopValues = true
+
+// var WrapTopValues = false
 
 // var doDebug = true
 
-var doDebug = false
-
 // var debugFn = fmt.Printf
+
+var doDebug = false
 
 var debugFn = fmt.Sprintf
 
