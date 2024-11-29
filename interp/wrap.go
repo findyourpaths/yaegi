@@ -73,12 +73,13 @@ func genValueTop(n *node) func(*frame) reflect.Value {
 		return func(f *frame) reflect.Value { return reflect.ValueOf(idents) }
 
 	case exprStmt:
-		debugFn("in interp.genValueTop(), for exprStmt, delegating to genValue\n")
+		debugFn("in interp.genValueTop(), for exprStmt, checking\n")
 		// Return empty slice if this evaluates to nothing (e.g. calling func () {})
 		if n.findex == -1 {
 			idents := []reflect.Value{}
 			return func(f *frame) reflect.Value { return reflect.ValueOf(idents) }
 		}
+		debugFn("in interp.genValueTop(), for exprStmt, delegating to genValue\n")
 		return genValue(n)
 
 	case fileStmt:
