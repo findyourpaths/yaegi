@@ -6,6 +6,7 @@ import (
 	"go/build"
 	"os"
 	"reflect"
+	"runtime/pprof"
 	"strconv"
 	"strings"
 
@@ -17,11 +18,20 @@ import (
 )
 
 func run(arg []string) error {
+	// fmt.Printf("TestExtractAllPersonRecords\n")
+	f, err := os.Create("yaegi.prof")
+	if err != nil {
+		panic(fmt.Sprintf("error initializing pprof: %v", err))
+	}
+	defer f.Close()
+	pprof.StartCPUProfile(f)
+	defer pprof.StopCPUProfile()
+
 	var interactive bool
 	var noAutoImport bool
 	var tags string
 	var cmd string
-	var err error
+	// var err error
 
 	// The following flags are initialized from environment.
 	useSyscall, _ := strconv.ParseBool(os.Getenv("YAEGI_SYSCALL"))

@@ -14,6 +14,7 @@ import (
 	"go/token"
 	"go/types"
 	"io"
+	"log/slog"
 	"math/big"
 	"os"
 	"path"
@@ -162,6 +163,7 @@ func (e *Extractor) genContent(importPath string, p *types.Package) ([]byte, err
 	}
 
 	for _, name := range sc.Names() {
+		slog.Debug("in Extractor.genContent(), looking at", "name", name)
 		o := sc.Lookup(name)
 		if !o.Exported() {
 			continue
@@ -442,16 +444,19 @@ func (e *Extractor) importPath(pkgIdent, importPath string) (string, error) {
 // If pkgIdent is an import path, it is looked up in GOPATH. Vendoring is not
 // supported yet, and the behavior is only defined for GO111MODULE=off.
 func (e *Extractor) Extract(pkgIdent, importPath string, rw io.Writer) (string, error) {
+	slog.Debug("in extract.Extract(), importing", "importPath", importPath)
 	ipp, err := e.importPath(pkgIdent, importPath)
 	if err != nil {
 		return "", err
 	}
 
+	slog.Debug("in extract.Extract(), compiling", "pkgIdent", pkgIdent)
 	pkg, err := importer.ForCompiler(token.NewFileSet(), "source", nil).Import(pkgIdent)
 	if err != nil {
 		return "", err
 	}
 
+	slog.Debug("in extract.Extract(), generating content")
 	content, err := e.genContent(ipp, pkg)
 	if err != nil {
 		return "", err

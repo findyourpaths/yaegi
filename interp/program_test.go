@@ -102,6 +102,11 @@ func TestREPLMultiValue(t *testing.T) {
 				reflect.ValueOf("a"),
 			},
 		},
+		{
+			// Evaluate to nothing.
+			src:      `func() { }()`,
+			expected: []reflect.Value{},
+		},
 	}
 
 	WrapTopValues = true

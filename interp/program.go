@@ -2,7 +2,6 @@ package interp
 
 import (
 	"context"
-	"fmt"
 	"go/ast"
 	"go/token"
 	"os"
@@ -182,7 +181,6 @@ func (interp *Interpreter) Execute(p *Program) (res reflect.Value, err error) {
 		}
 	}
 
-	fmt.Printf("Execute returning\n")
 	return res, err
 }
 

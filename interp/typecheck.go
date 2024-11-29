@@ -762,7 +762,7 @@ func (check typecheck) builtin(name string, n *node, child []*node, ellipsis boo
 	if nparams < fun.args {
 		return n.cfgErrorf("not enough arguments in call to %s", name)
 	} else if !fun.variadic && nparams > fun.args {
-		return n.cfgErrorf("too many arguments for %s", name)
+		return n.cfgErrorf("too many arguments for call to %s", name)
 	}
 
 	switch name {
@@ -988,7 +988,7 @@ func (check typecheck) arguments(n *node, child []*node, fun *node, ellipsis boo
 func (check typecheck) argument(p param, ftyp *itype, i, l int, ellipsis bool) error {
 	atyp := getArg(ftyp, i)
 	if atyp == nil {
-		return p.nod.cfgErrorf("too many arguments")
+		return p.nod.cfgErrorf("too many arguments in argument")
 	}
 
 	if p.typ == nil && isCall(p.nod) && p.nod.child[0].typ.numOut() != 1 {
