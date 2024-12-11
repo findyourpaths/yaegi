@@ -15,9 +15,9 @@ func TestREPLMultiValue(t *testing.T) {
 			// Set three variables
 			src: `a, b, c := func() (int, string, bool) { return 42, "foo", true }()`,
 			expected: []reflect.Value{
-				reflect.ValueOf("a"),
-				reflect.ValueOf("b"),
-				reflect.ValueOf("c"),
+				reflect.ValueOf(Variable{Name: "a"}),
+				reflect.ValueOf(Variable{Name: "b"}),
+				reflect.ValueOf(Variable{Name: "c"}),
 			},
 		},
 		// {
@@ -42,8 +42,8 @@ func TestREPLMultiValue(t *testing.T) {
 			// Set two variables.
 			src: `a, b := func() (int, string) { return 42, "foo" }()`,
 			expected: []reflect.Value{
-				reflect.ValueOf("a"),
-				reflect.ValueOf("b"),
+				reflect.ValueOf(Variable{Name: "a"}),
+				reflect.ValueOf(Variable{Name: "b"}),
 			},
 		},
 		// {
@@ -58,7 +58,7 @@ func TestREPLMultiValue(t *testing.T) {
 			// Set one variable.
 			src: `a := func() (int) { return 42 }()`,
 			expected: []reflect.Value{
-				reflect.ValueOf("a"),
+				reflect.ValueOf(Variable{Name: "a"}),
 			},
 		},
 		// {
@@ -77,7 +77,7 @@ func TestREPLMultiValue(t *testing.T) {
 			// Define named function.
 			src: `func foo() (int) { return 42 }`,
 			expected: []reflect.Value{
-				reflect.ValueOf("foo"),
+				reflect.ValueOf(Variable{Name: "foo"}),
 			},
 		},
 		// {
@@ -91,15 +91,15 @@ func TestREPLMultiValue(t *testing.T) {
 			// Set two variables to two values.
 			src: `a, b := 7, 42`,
 			expected: []reflect.Value{
-				reflect.ValueOf("a"),
-				reflect.ValueOf("b"),
+				reflect.ValueOf(Variable{Name: "a"}),
+				reflect.ValueOf(Variable{Name: "b"}),
 			},
 		},
 		{
 			// Set one variable to one value.
 			src: `a := 7`,
 			expected: []reflect.Value{
-				reflect.ValueOf("a"),
+				reflect.ValueOf(Variable{Name: "a"}),
 			},
 		},
 		{
@@ -112,7 +112,7 @@ func TestREPLMultiValue(t *testing.T) {
 	WrapTopValues = true
 
 	for j, tt := range tests {
-		debugFn("\nTest: %d\n", j)
+		debugFn("\nTest: %d with source: %q\n", j, tt.src)
 		i := New(Options{})
 
 		// First compile the source
@@ -161,12 +161,21 @@ func TestREPLMultiValue(t *testing.T) {
 					want := tt.expected[j]
 					if !reflect.DeepEqual(sv.Interface(), want.Interface()) {
 						t.Errorf("For %q value[%d]: got %v, want %v", tt.src, j, sv.Interface(), want.Interface())
+						continue
 					}
 				}
 			} else {
+				if i == 0 && len(tt.expected) == 0 {
+					continue
+				}
+				// if i >= len(tt.expected) {
+				// 	t.Errorf("i: %d >= len(tt.expected): %d", i, len(tt.expected))
+				// 	continue
+				// }
 				want := tt.expected[i]
 				if !reflect.DeepEqual(got.Interface(), want.Interface()) {
 					t.Errorf("For %q value[%d]: got %v, want %v", tt.src, i, got.Interface(), want.Interface())
+					continue
 				}
 			}
 		}

@@ -5,6 +5,12 @@ import (
 	"reflect"
 )
 
+type Variable struct {
+	Name string
+}
+
+var VariableType = reflect.TypeOf(Variable{})
+
 var WrapTopValues = true
 
 // var WrapTopValues = false
@@ -54,23 +60,11 @@ func genValueTop(n *node) func(*frame) reflect.Value {
 
 	case defineStmt:
 		debugFn("in interp.genValueTop(), for defineStmt, collecting child identExpr nodes\n")
-		idents := []reflect.Value{}
-		for _, c := range n.child {
-			if c.kind == identExpr {
-				idents = append(idents, reflect.ValueOf(c.ident))
-			}
-		}
-		return func(f *frame) reflect.Value { return reflect.ValueOf(idents) }
+		return func(f *frame) reflect.Value { return reflect.ValueOf(nodeChildIdents(n)) }
 
 	case defineXStmt:
 		debugFn("in interp.genValueTop(), for defineXStmt, collecting child identExpr nodes\n")
-		idents := []reflect.Value{}
-		for _, c := range n.child {
-			if c.kind == identExpr {
-				idents = append(idents, reflect.ValueOf(c.ident))
-			}
-		}
-		return func(f *frame) reflect.Value { return reflect.ValueOf(idents) }
+		return func(f *frame) reflect.Value { return reflect.ValueOf(nodeChildIdents(n)) }
 
 	case exprStmt:
 		debugFn("in interp.genValueTop(), for exprStmt, checking\n")
@@ -88,12 +82,7 @@ func genValueTop(n *node) func(*frame) reflect.Value {
 
 	case funcDecl:
 		debugFn("in interp.genValueTop(), for funcDecl, collecting child identExpr nodes\n")
-		idents := []reflect.Value{}
-		for _, c := range n.child {
-			if c.kind == identExpr {
-				idents = append(idents, reflect.ValueOf(c.ident))
-			}
-		}
+		idents := nodeChildIdents(n)
 		if len(idents) != 1 {
 			fmt.Printf("warn: expecting one identExpr, got %d\n", len(idents))
 		}
@@ -105,6 +94,16 @@ func genValueTop(n *node) func(*frame) reflect.Value {
 	default:
 		return genValue(n)
 	}
+}
+
+func nodeChildIdents(n *node) []reflect.Value {
+	rs := []reflect.Value{}
+	for _, c := range n.child {
+		if c.kind == identExpr {
+			rs = append(rs, reflect.ValueOf(Variable{Name: c.ident}))
+		}
+	}
+	return rs
 }
 
 // WrapReflectValueSlice takes a slice of reflect.Value and returns a single reflect.Value
